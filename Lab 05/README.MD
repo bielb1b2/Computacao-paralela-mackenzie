@@ -1,4 +1,6 @@
 # Lab 05 - Array e Paralela
+Replit: https://replit.com/@bielb1b2/ArrayParalelismo#main.c
+
 ## Função Main
   1. cria os pthread t1 e t2
   2. variaveis auxiliares a1 e a2
