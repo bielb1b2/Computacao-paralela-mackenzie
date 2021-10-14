@@ -1,5 +1,7 @@
 /*
   Gabriel Vitor de Souza - 41908961
+
+  GITHUB LIÇÃO: https://github.com/bielb1b2/Computacao-paralela-mackenzie/tree/main/Lab%2006
 */
 
 #include <stdio.h>
