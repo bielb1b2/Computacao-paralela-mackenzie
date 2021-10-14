@@ -1,52 +1,65 @@
-// Gabriel Vitor De Souza
-// 41908961
+/*
+  Gabriel Vitor de Souza - 41908961
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
 
-#define SIZE 10
+int thread_count;
+int x[3] = {2,4,6};
+int y[3];
+int A[3][3] = {{1,2,3}, {4,5,6}, {7,8,9}};
 
-int v[SIZE];
+int m = 3;
+int n = 3;
 
-void* multiplyNumber (void *arg) {
-  int *valor = (int *)(arg);
-  if(*valor == 1){
-    printf("Thread 1 Executando...\n");
-    for (int i = 0; i < SIZE / 2; i++){
-      v[i] = v[i] * 4;
+void *Pth_mat_vect(void* rank){
+  long my_rank = (long) rank;
+  int i, j;
+
+  int local_m = m/thread_count;
+  int my_first_row = my_rank*local_m;
+  int my_last_row = (my_rank+1)*local_m - 1;
+  
+  for(i = my_first_row; i <= my_last_row; i++){
+    y[i] = 0.0;
+    for(j = 0; j < n; j++){
+      y[i] += A[i][j]*x[j];
+
     }
   }
-  else {
-      printf("Thread 2 Executando...\n");
-      for (int i = SIZE / 2; i < SIZE; i++){
-      v[i] = v[i] * 4;
-    }
-  }
-  pthread_exit(multiplyNumber);
+  return NULL;
 } 
 
-int main() {
-  pthread_t t1, t2;
-  int a1 = 1;
-  int a2 = 2;
+int main(int argc, char* argv[])
+{
 
-  printf("Insira 10 números: \n");
-  for(int i = 0; i < SIZE; i++) {
+    long thread;
+    pthread_t* thread_handles;
+
+    thread_count = 3;
+    thread_handles = malloc(thread_count*sizeof(pthread_t));
+
+    for(thread = 0; thread < thread_count; thread++){
+      pthread_create(&thread_handles[thread], NULL, Pth_mat_vect, (void*) thread);
+    }
+
+    printf("Hello from the main thread\n");
+
+        for(thread = 0;thread < thread_count;thread++)
+    {
+        pthread_join(thread_handles[thread],NULL);
+    }
+
+    free(thread_handles);
+
+
+    for(int i = 0; i < thread_count; i++){ //Imprime valores de y
+      printf("Linha %d = ", i);
+      printf("%d\n", y[i]);
     
-    scanf("%d", &v[i]);
-  }
+    }
 
-  pthread_create(&t1, NULL, multiplyNumber, (void *)(&a1));
-  pthread_create(&t2, NULL, multiplyNumber, (void *)(&a2));
-
-  pthread_join(t1, NULL);
-  pthread_join(t2, NULL);
-
-  for(int i = 0; i < SIZE; i++) {
-    printf("%d ", v[i]);
-  }
-
-  exit(0);
-  
+    return 0;
 }
