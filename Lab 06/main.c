@@ -28,7 +28,6 @@ void *Pth_mat_vect(void* rank){
     y[i] = 0.0;
     for(j = 0; j < n; j++){
       y[i] += A[i][j]*x[j];
-
     }
   }
   return NULL;
@@ -36,7 +35,6 @@ void *Pth_mat_vect(void* rank){
 
 int main(int argc, char* argv[])
 {
-
     long thread;
     pthread_t* thread_handles;
 
@@ -60,7 +58,6 @@ int main(int argc, char* argv[])
     for(int i = 0; i < thread_count; i++){ //Imprime valores de y
       printf("%d = ", i);
       printf("%d\n", y[i]);
-    
     }
 
     return 0;
